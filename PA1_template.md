@@ -71,7 +71,24 @@ for (i in 1:nrow(newStepsData))
 }
 ```
 ## Generating a histogram of the total number of steps taken each day
+
+```r
+total_steps_by_date <- aggregate(list(total_steps = newStepsData$steps),
+                                 by=list(date = newStepsData$date),
+                                 FUN=sum,
+                                 na.rm=TRUE)
+
+hist(total_steps_by_date$total_steps,
+     main="total steps for each date histogram",
+     xlab="total steps")
+```
+
 ![](PA1_template_files/figure-html/new_total_steps_per_day-1.png)<!-- -->
+
+```r
+total_steps_mean <- mean(total_steps_by_date$total_steps)
+total_steps_median <- median(total_steps_by_date$total_steps)
+```
 
 The mean of total steps is 1.0766189\times 10^{4} and the median is 1.0766189\times 10^{4}
 
@@ -85,4 +102,23 @@ newStepsData$dayType =factor(ifelse(((weekdays(as.Date(newStepsData$date)) == "S
 ```
 
 2. Panel plot containing a time series plot (i.e. type = "l") of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all weekday days or weekend days (y-axis).
-![](PA1_template_files/figure-html/plot_panel-1.png)<!-- -->![](PA1_template_files/figure-html/plot_panel-2.png)<!-- -->
+
+```r
+par(mfrow=c(2,1))
+windows(10,5)
+total_steps_by_interval <- aggregate(list(avg_steps = newStepsData$steps),
+                                     by=list(interval = newStepsData$interval,dayType = newStepsData$dayType),
+                                     FUN=mean,
+                                     na.rm=TRUE)
+weekday_values <- subset(total_steps_by_interval,dayType=="weekday")
+weekend_values <- subset(total_steps_by_interval,dayType=="weekend")
+plot(weekday_values$interval, weekday_values$avg_steps, type="l", main='weekday',xlab = "interval", ylab = "number of steps")
+```
+
+![](PA1_template_files/figure-html/plot_panel-1.png)<!-- -->
+
+```r
+plot(weekend_values$interval, weekend_values$avg_steps, type="l", main='weekend',xlab = "interval", ylab = "number of steps")
+```
+
+![](PA1_template_files/figure-html/plot_panel-2.png)<!-- -->

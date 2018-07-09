@@ -60,7 +60,7 @@ for (i in 1:nrow(newStepsData))
 }
 ```
 ## Generating a histogram of the total number of steps taken each day
-```{r new_total_steps_per_day, echo=FALSE}
+```{r new_total_steps_per_day}
 total_steps_by_date <- aggregate(list(total_steps = newStepsData$steps),
                                  by=list(date = newStepsData$date),
                                  FUN=sum,
@@ -86,7 +86,7 @@ newStepsData$dayType =factor(ifelse(((weekdays(as.Date(newStepsData$date)) == "S
 ```  
 
 2. Panel plot containing a time series plot (i.e. type = "l") of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all weekday days or weekend days (y-axis).
-```{r plot_panel,echo=FALSE}
+```{r plot_panel}
 par(mfrow=c(2,1))
 windows(10,5)
 total_steps_by_interval <- aggregate(list(avg_steps = newStepsData$steps),
